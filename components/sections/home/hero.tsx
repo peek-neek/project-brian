@@ -12,6 +12,7 @@ import {
 } from "@hugeicons/core-free-icons"
 
 import { RevealText } from "@/components/motion/reveal-text"
+import { RotatingWord } from "@/components/motion/rotating-word"
 import { Laurel } from "@/components/shared/laurel"
 import { buttonVariants } from "@/components/ui/button"
 import { agent } from "@/lib/site-data"
@@ -47,13 +48,16 @@ export function Hero() {
 
       <div className="hero-content-parallax container-x relative pt-32 pb-10 sm:pt-40 lg:pt-48">
         <div className="max-w-4xl">
-          <RevealText
-            as="h1"
-            onMount
-            delay={0.25}
-            text={["Find Your Place", "in Brampton."]}
+          <h1
+            aria-label={`Find your place in ${agent.heroCities.join(", ")}`}
             className="text-display text-white"
-          />
+          >
+            <RevealText as="span" onMount delay={0.25} text="Find Your Place" className="block" />
+            <span className="block whitespace-nowrap">
+              <RevealText as="span" onMount delay={0.4} text="in" />{" "}
+              <RotatingWord words={agent.heroCities} suffix="." initialDelay={0.5} />
+            </span>
+          </h1>
           <motion.p
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}

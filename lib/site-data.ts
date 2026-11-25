@@ -18,6 +18,8 @@ export const agent = {
   officeShort: "10 Cottrelle Blvd, Suite 302, Brampton, ON L6S 0E2",
   city: "Brampton",
   serviceArea: "Brampton & the Greater Toronto Area",
+  /** Cities cycled in the home hero headline — first one shows on load */
+  heroCities: ["Brampton", "Mississauga", "Caledon", "Vaughan", "Georgetown", "Etobicoke"],
   photo: "/images/brian-macisaac.jpg",
   rating: 4.98, // PLACEHOLDER
   reviewCount: 120, // PLACEHOLDER

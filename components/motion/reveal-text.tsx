@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 
 type RevealTextProps = {
   text: string | string[]
-  as?: "h1" | "h2" | "h3" | "h4" | "p" | "div"
+  as?: "h1" | "h2" | "h3" | "h4" | "p" | "div" | "span"
   className?: string
   /** "lines" slides each word up from a mask (SplitText-style line reveal).
    *  "chars" fades & un-blurs characters one by one. */
