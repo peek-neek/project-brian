@@ -204,6 +204,109 @@ html.lenis body {
   }
 }
 
+/* ------------------------------------------------------------------
+   Scroll-driven parallax.
+   These run on the compositor thread (same thread as the scroll itself),
+   so they never lag behind a phone's native momentum scroll the way
+   JS scroll listeners do. Browsers without support show a still image.
+------------------------------------------------------------------- */
+@keyframes parallax-y {
+  from {
+    transform: translate3d(0, calc(var(--parallax, 12%) * -1), 0);
+  }
+  to {
+    transform: translate3d(0, var(--parallax, 12%), 0);
+  }
+}
+@keyframes hero-bg-drift {
+  to {
+    transform: translate3d(0, 18%, 0);
+  }
+}
+@keyframes hero-content-drift {
+  to {
+    transform: translate3d(0, -8%, 0);
+  }
+}
+@keyframes cluster-left {
+  from {
+    transform: translate3d(60%, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(-4deg);
+  }
+}
+@keyframes cluster-right {
+  from {
+    transform: translate3d(-60%, 0, 0) rotate(0deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(4deg);
+  }
+}
+@keyframes cluster-center {
+  from {
+    transform: scale(0.85);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Resting state for browsers without scroll timelines */
+.cluster-left {
+  transform: rotate(-4deg);
+}
+.cluster-right {
+  transform: rotate(4deg);
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .parallax-frame {
+      view-timeline: --parallax-frame block;
+    }
+    .parallax-layer {
+      animation: parallax-y linear both;
+      animation-timeline: --parallax-frame;
+      animation-range: cover;
+    }
+    .hero-bg-parallax,
+    .hero-content-parallax {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root block);
+      animation-range: 0px 100svh;
+    }
+    .hero-bg-parallax {
+      animation-name: hero-bg-drift;
+    }
+    .hero-content-parallax {
+      animation-name: hero-content-drift;
+    }
+    .cluster-frame {
+      view-timeline: --cluster block;
+    }
+    .cluster-left,
+    .cluster-right,
+    .cluster-center {
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: --cluster;
+      animation-range: entry 0% cover 50%;
+    }
+    .cluster-left {
+      animation-name: cluster-left;
+    }
+    .cluster-right {
+      animation-name: cluster-right;
+    }
+    .cluster-center {
+      animation-name: cluster-center;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

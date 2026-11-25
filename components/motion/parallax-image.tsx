@@ -1,11 +1,12 @@
-"use client"
-
-import { useRef } from "react"
+import type { CSSProperties } from "react"
 import Image from "next/image"
-import { motion, useScroll, useTransform } from "motion/react"
 import { cn } from "@/lib/utils"
 
-/** Image that drifts slightly inside its frame as the page scrolls. */
+/**
+ * Image that drifts slightly inside its frame as the page scrolls.
+ * Driven by a CSS scroll timeline (see `.parallax-frame` in globals.css),
+ * so it stays perfectly in sync with native touch scrolling on phones.
+ */
 export function ParallaxImage({
   src,
   alt,
@@ -23,15 +24,14 @@ export function ParallaxImage({
   priority?: boolean
   sizes?: string
 }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
-  const y = useTransform(scrollYProgress, [0, 1], [`-${strength}%`, `${strength}%`])
-
   return (
-    <div ref={ref} className={cn("relative overflow-hidden", className)}>
-      <motion.div style={{ y }} className="absolute -inset-y-[15%] inset-x-0 will-change-transform">
+    <div className={cn("parallax-frame relative overflow-hidden", className)}>
+      <div
+        className="parallax-layer absolute inset-x-0 -inset-y-[15%]"
+        style={{ "--parallax": `${strength}%` } as CSSProperties}
+      >
         <Image src={src} alt={alt} fill priority={priority} sizes={sizes} className={cn("object-cover", imgClassName)} />
-      </motion.div>
+      </div>
     </div>
   )
 }

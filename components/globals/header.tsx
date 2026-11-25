@@ -118,7 +118,7 @@ export default function Header() {
           className={cn(
             "absolute inset-0 -z-10 transition-all duration-500",
             scrolled && !open
-              ? "bg-ink/70 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.6)] backdrop-blur-xl"
+              ? "bg-ink/95 shadow-[0_10px_40px_-20px_rgb(0_0_0/0.6)] lg:bg-ink/70 lg:backdrop-blur-xl"
               : "bg-transparent"
           )}
         />

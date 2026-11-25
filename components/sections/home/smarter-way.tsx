@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, type MotionValue } from "motion/react"
 import { RevealText } from "@/components/motion/reveal-text"
 import { FadeIn } from "@/components/motion/fade-in"
 import { ButtonLink } from "@/components/shared/button-link"
+import { useMediaQuery } from "@/hooks/use-media-query"
 import { smarterWay } from "@/lib/site-data"
 
 function StepCard({
@@ -15,7 +16,9 @@ function StepCard({
   title,
   text,
   progress,
+  stacked,
 }: {
+  stacked: boolean
   index: number
   total: number
   title: string
@@ -28,7 +31,7 @@ function StepCard({
 
   return (
     <motion.article
-      style={{ scale, top: `calc(7rem + ${index * 1.5}rem)` }}
+      style={stacked ? { scale, top: `calc(7rem + ${index * 1.5}rem)` } : undefined}
       className="flex min-h-[19rem] origin-top flex-col rounded-2xl bg-white p-6 shadow-[0_-20px_60px_-30px_rgb(0_0_0/0.35)] sm:min-h-[22rem] sm:p-8 lg:sticky"
     >
       <span className="grid size-12 place-items-center rounded-lg border border-black/15 text-lg font-medium">
@@ -43,6 +46,8 @@ function StepCard({
 }
 
 export function SmarterWay() {
+  // Cards only stack (sticky + shrink) on desktop; on phones they scroll normally.
+  const stacked = useMediaQuery("(min-width: 1024px)")
   const ref = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] })
 
@@ -72,7 +77,7 @@ export function SmarterWay() {
 
           <div ref={ref} className="flex flex-col gap-4">
             {smarterWay.map((step, i) => (
-              <StepCard key={step.title} index={i} total={smarterWay.length} progress={scrollYProgress} {...step} />
+              <StepCard key={step.title} index={i} total={smarterWay.length} progress={scrollYProgress} stacked={stacked} {...step} />
             ))}
           </div>
         </div>

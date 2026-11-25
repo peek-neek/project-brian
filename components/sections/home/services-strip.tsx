@@ -22,14 +22,22 @@ export function ServicesStrip() {
       </div>
 
       {/* Desktop: edge-to-edge cards that widen on hover. Mobile: swipeable row. */}
-      <div className="no-scrollbar flex snap-x snap-mandatory gap-1 overflow-x-auto px-1 md:overflow-visible" data-lenis-prevent-touch>
-        {services.map((s, i) => (
+      {/* The whole row triggers once as it enters vertically, so swiping the
+          row sideways on a phone never re-triggers card entrances. */}
+      <motion.div
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.1 } } }}
+        className="no-scrollbar flex snap-x snap-mandatory gap-1 overflow-x-auto overscroll-x-contain px-1 md:overflow-visible"
+      >
+        {services.map((s) => (
           <motion.div
             key={s.slug}
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-            transition={{ duration: 1, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
+            variants={{
+              hidden: { opacity: 0, y: 80 },
+              show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.16, 1, 0.3, 1] } },
+            }}
             className="w-[78vw] shrink-0 snap-center transition-[flex-grow] duration-700 ease-out-expo sm:w-[46vw] md:w-auto md:flex-1 md:hover:flex-[1.55]"
           >
             <Link
@@ -58,7 +66,7 @@ export function ServicesStrip() {
             </Link>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
     </section>
   )
 }

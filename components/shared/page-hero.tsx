@@ -35,7 +35,7 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "relative isolate flex items-end overflow-hidden bg-ink text-white",
+        "relative isolate flex items-end overflow-clip bg-ink text-white",
         size === "lg" ? "min-h-[86svh]" : "min-h-[62svh] sm:min-h-[70svh]",
         className
       )}

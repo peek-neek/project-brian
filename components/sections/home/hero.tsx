@@ -1,9 +1,8 @@
 "use client"
 
-import { useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { motion, useScroll, useTransform } from "motion/react"
+import { motion } from "motion/react"
 import { HugeiconsIcon } from "@hugeicons/react"
 import {
   Calendar03Icon,
@@ -13,25 +12,19 @@ import {
 } from "@hugeicons/core-free-icons"
 
 import { RevealText } from "@/components/motion/reveal-text"
-import { CountUp } from "@/components/motion/count-up"
 import { Laurel } from "@/components/shared/laurel"
-import { Avatar, AvatarGroup, AvatarImage } from "@/components/ui/avatar"
 import { buttonVariants } from "@/components/ui/button"
-import { agent, testimonials } from "@/lib/site-data"
+import { agent } from "@/lib/site-data"
 import { cn } from "@/lib/utils"
 
 const ease = [0.16, 1, 0.3, 1] as const
 
 export function Hero() {
-  const ref = useRef<HTMLElement>(null)
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] })
-  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"])
-  const contentY = useTransform(scrollYProgress, [0, 1], ["0%", "-8%"])
-
   return (
-    <section ref={ref} className="relative isolate overflow-hidden bg-ink text-white">
-      {/* Background photo with slow zoom-in on load + parallax on scroll */}
-      <motion.div style={{ y: bgY }} className="absolute inset-0 -z-20">
+    <section className="relative isolate overflow-hidden bg-ink text-white">
+      {/* Background photo: slow zoom-in on load (Motion) + compositor-driven
+          parallax on scroll (CSS scroll timeline, smooth on phones) */}
+      <div className="hero-bg-parallax absolute inset-0 -z-20">
         <motion.div
           initial={{ scale: 1.18, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -47,12 +40,12 @@ export function Hero() {
             className="object-cover object-[70%_50%]"
           />
         </motion.div>
-      </motion.div>
+      </div>
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-ink via-ink/85 to-ink/10" />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-t from-ink via-transparent to-ink/60" />
       <div aria-hidden className="bg-grid-dark absolute inset-0 -z-10" />
 
-      <motion.div style={{ y: contentY }} className="container-x relative pt-32 pb-10 sm:pt-40 lg:pt-48">
+      <div className="hero-content-parallax container-x relative pt-32 pb-10 sm:pt-40 lg:pt-48">
         <div className="max-w-4xl">
           <RevealText
             as="h1"
@@ -87,7 +80,6 @@ export function Hero() {
               <span className="text-xl font-bold">Realtor®</span>
             </p>
           </Laurel>
-          <span aria-hidden className="hidden h-28 w-px bg-white/25 sm:block" />
           {/* <div className="flex items-center gap-5">
             <div>
               <CountUp
@@ -152,7 +144,7 @@ export function Hero() {
             </Link>
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Portrait card on large screens */}
       <motion.div
